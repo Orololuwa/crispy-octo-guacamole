@@ -1,15 +1,25 @@
 package repository
 
-import "database/sql"
+import (
+	"database/sql"
 
-type DatabaseRepo interface {}
+	"github.com/orololuwa/crispy-octo-guacamole/models"
+)
 
-type repo struct {
+type DatabaseRepo interface {
+	CreateAUser(user models.User) (int, error)
+	GetAUser(id int) (models.User, error)
+	GetAllUser() ([]models.User, error)
+	UpdateAUsersName(id int, firstName, lastName string)(error)
+	DeleteUserByID(id int) error
+}
+
+type Repo struct {
 	DB *sql.DB
 }
 
 func New(conn *sql.DB) DatabaseRepo {
-	return &repo{
+	return &Repo{
 		DB: conn,
 	}
 }

@@ -1,8 +1,9 @@
-module github.com/orololuwa/db-driver-conn-and-repository
+module github.com/orololuwa/crispy-octo-guacamole
 
 go 1.21.5
 
 require (
+	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect
