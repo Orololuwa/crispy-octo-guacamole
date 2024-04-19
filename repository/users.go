@@ -2,12 +2,23 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	"github.com/orololuwa/crispy-octo-guacamole/models"
 )
 
-func (m *Repo) CreateAUser(user models.User) (int, error){
+type user struct {
+	DB *sql.DB
+}
+
+func NewUserRepo(conn *sql.DB) UserRepo {
+	return &user{
+		DB: conn,
+	}
+}
+
+func (m *user) CreateAUser(user models.User) (int, error){
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -36,7 +47,7 @@ func (m *Repo) CreateAUser(user models.User) (int, error){
 	return newId, nil
 }
 
-func (m *Repo) GetAUser(id int) (models.User, error){
+func (m *user) GetAUser(id int) (models.User, error){
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -66,7 +77,7 @@ func (m *Repo) GetAUser(id int) (models.User, error){
 	return user, nil
 }
 
-func (m *Repo) GetAllUser() ([]models.User, error){
+func (m *user) GetAllUser() ([]models.User, error){
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -106,7 +117,7 @@ func (m *Repo) GetAllUser() ([]models.User, error){
 	return users, nil
 }
 
-func (m *Repo) UpdateAUsersName(id int, firstName, lastName string)(error){
+func (m *user) UpdateAUsersName(id int, firstName, lastName string)(error){
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -125,7 +136,7 @@ func (m *Repo) UpdateAUsersName(id int, firstName, lastName string)(error){
 	return nil
 }
 
-func (m *Repo) DeleteUserByID(id int) error {
+func (m *user) DeleteUserByID(id int) error {
     ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
     defer cancel()
 

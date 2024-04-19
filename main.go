@@ -52,7 +52,7 @@ func run()(*driver.DB, *chi.Mux, error){
 	}
 	log.Println("Connected to database")
 
-	repo := repository.New(db.SQL)
+	userRepo := repository.NewUserRepo(db.SQL)
 	router := chi.NewRouter()
 
 	router.Post("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +79,7 @@ func run()(*driver.DB, *chi.Mux, error){
 			Password: body.Password,
 		}
 		
-		id, err := repo.CreateAUser(user)
+		id, err := userRepo.CreateAUser(user)
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
