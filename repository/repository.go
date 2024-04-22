@@ -8,11 +8,11 @@ import (
 )
 
 type UserRepo interface {
-	CreateAUser(user models.User) (int, error)
-	GetAUser(id int) (models.User, error)
-	GetAllUser() ([]models.User, error)
-	UpdateAUsersName(id int, firstName, lastName string)(error)
-	DeleteUserByID(id int) error
+	CreateAUser(ctx context.Context, tx *sql.Tx, user models.User) (int, error)
+	GetAUser(ctx context.Context, tx *sql.Tx, id int) (models.User, error)
+	GetAllUser(ctx context.Context, tx *sql.Tx) ([]models.User, error)
+	UpdateAUsersName(ctx context.Context, tx *sql.Tx, id int, firstName, lastName string)(error)
+	DeleteUserByID(ctx context.Context, tx *sql.Tx, id int) error
 }
 
 type DBRepo interface {

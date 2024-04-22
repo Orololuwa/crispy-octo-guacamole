@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -53,6 +55,7 @@ func run()(*driver.DB, *chi.Mux, error){
 	log.Println("Connected to database")
 
 	userRepo := repository.NewUserRepo(db.SQL)
+	dbRepo := repository.NewDBRepo(db.SQL)
 	router := chi.NewRouter()
 
 	router.Post("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -78,8 +81,24 @@ func run()(*driver.DB, *chi.Mux, error){
 			Email: body.Email,
 			Password: body.Password,
 		}
+
+		ctx := context.Background()
+		var id int
+
+		err = dbRepo.Transaction(ctx, func(ctx context.Context, tx *sql.Tx) error {
+			id, err = userRepo.CreateAUser(ctx, tx, user)
+			if err != nil {
+				return err
+			}
+
+			userRepo.UpdateAUsersName(ctx, tx, id, body.FirstName, "test")
+			if err != nil {
+				return err
+			}
+
+			return nil
+		})
 		
-		id, err := userRepo.CreateAUser(user)
 		if err != nil {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusInternalServerError)
