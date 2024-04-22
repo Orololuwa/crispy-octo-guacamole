@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"context"
+	"database/sql"
+
 	"github.com/orololuwa/crispy-octo-guacamole/models"
 )
 
@@ -12,3 +15,6 @@ type UserRepo interface {
 	DeleteUserByID(id int) error
 }
 
+type DBRepo interface {
+	Transaction(ctx context.Context, operation func(context.Context, *sql.Tx) error) error 
+}
