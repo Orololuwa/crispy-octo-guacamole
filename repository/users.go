@@ -66,7 +66,7 @@ func (m *user) GetAUser(ctx context.Context, tx *sql.Tx, id int) (models.User, e
 	var user models.User
 
 	query := `
-			SELECT (id, first_name, last_name, email, password, created_at, updated_at)
+			SELECT id, first_name, last_name, email, password, created_at, updated_at
 			from users
 			WHERE
 			id=$1
@@ -109,7 +109,7 @@ func (m *user) GetAllUser(ctx context.Context, tx *sql.Tx) ([]models.User, error
 	var users = make([]models.User, 0)
 
 	query := `
-		SELECT (id, first_name, last_name, email, password, created_at, updated_at)
+		SELECT id, first_name, last_name, email, password, created_at, updated_at
 		from users
 	`
 
